@@ -23,17 +23,8 @@ app
 	.use(express.urlencoded({ extended: false }))
 	.use(express.json())
 	.use(cors())
+	.use(express.static('views'))
 	.get('/', (req, res) => {
-		const options = {
-			root: path.join(__dirname)
-		};
-
-		res.sendFile('/views/index.html', options, (err) => {
-			if (err) {
-					next(err);
-			} else {
-					console.log('Sent:', '/views/index.html');
-			}
-	})
+		res.sendFile('index.html', {root: path.join(__dirname, 'views')})
 	})
 	.post('/', sendMail)

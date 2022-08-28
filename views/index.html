@@ -7,14 +7,29 @@
 	<title>mail example</title>
 </head>
 <body>
-	<form action="http://localhost:3000/" method="post" id="email-form">
+	<form action="https://simple-express-gmail.vercel.app" method="post" id="email-form">
 		<input type="email" name="email" id ="email-input">
 		<input type="datetime-local" name="time" id ="time-input">
 		<button type="submit">submit</button>
 	</form>
 	<script>
+		// set time input to current time
+		window.addEventListener('load', () => {
+			const now = new Date()
+
+			now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
+			now.setMilliseconds(null)
+			now.setSeconds(null)
+
+			const timeElement = document.getElementById("time-input")
+			
+			timeElement.value = now.toISOString().slice(0, -1)
+		})
+
+
+		// override default form submit
 		const form =document.getElementById('email-form')
-		form.addEventListener('submit',(event) => {
+		form.addEventListener('submit', async (event) => {
 			event.preventDefault()
 
 			const body = {
@@ -31,7 +46,17 @@
 				body: JSON.stringify(body),
 			}
 
-			fetch('http://localhost:3000/', options)
+			const {status} = await fetch('https://simple-express-gmail.vercel.app', options)
+
+			const messageElement = document.createElement('h1')
+
+			if (status===200) {
+				messageElement.innerHTML = 'success'
+			} else {
+				messageElement.innerHTML = 'failure'
+			}
+
+			document.body.append(messageElement)
 		}, true)
 	</script>
 </body>

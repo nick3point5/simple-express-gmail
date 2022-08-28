@@ -1,10 +1,13 @@
 import express from 'express'
 import cors from 'cors'
+import dotenv from 'dotenv'
 
 import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { sendMail } from './controllers/sendMail.js'
+
+dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -21,6 +24,7 @@ app
 	.use(express.json())
 	.use(cors())
 	.get('/', (req, res) => {
-		res.sendFile(__dirname + '/views/index.html')
+		res.send("hello")
+		// res.sendFile(__dirname + '/views/index.html')
 	})
 	.post('/', sendMail)

@@ -24,7 +24,16 @@ app
 	.use(express.json())
 	.use(cors())
 	.get('/', (req, res) => {
-		res.send("hello")
-		// res.sendFile(__dirname + '/views/index.html')
+		const options = {
+			root: path.join(__dirname)
+		};
+
+		res.sendFile('/views/index.html', options, (err) => {
+			if (err) {
+					next(err);
+			} else {
+					console.log('Sent:', '/views/index.html');
+			}
+	})
 	})
 	.post('/', sendMail)
